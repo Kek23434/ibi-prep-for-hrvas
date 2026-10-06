@@ -1,0 +1,22 @@
+import os
+import shutil
+import sys
+
+
+def copy_text_files(source_folder, destination_folder):
+    """Copy all .txt files from a folder tree into one destination folder.
+
+    The parent folder name is added to each file name so files with the same name from different folders do not overwrite each other.
+    """
+    os.makedirs(destination_folder, exist_ok=True)
+    for root, _, files in os.walk(source_folder):
+        for file in files:
+            if file.endswith(".txt"):
+                source_file_path = os.path.join(root, file)
+                new_name = f"{os.path.basename(root)}_{file}"
+                shutil.copy(source_file_path, os.path.join(destination_folder, new_name))
+
+
+if __name__ == "__main__":
+    # Usage: python copy_text_files.py <source_folder> <destination_folder>
+    copy_text_files(sys.argv[1], sys.argv[2])
